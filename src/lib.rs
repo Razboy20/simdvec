@@ -10,7 +10,7 @@ use std::{
 
 // non-resizable SIMD processing vectors
 // TODO: rewrite impls to use SimdInt and SimdUint traits
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct SimdVec<T, const LANES: usize>
 where
   LaneCount<LANES>: SupportedLaneCount,
@@ -407,4 +407,35 @@ scalar_ops! {
   BitAnd: fn reduce_and => &,
   BitOr: fn reduce_or => |,
   BitXor: fn reduce_xor => ^
+}
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[test]
+  fn simple_inst() {
+    let simd_vec: SimdVec<i8, 16> = SimdVec::from([1, 2, 3, 4]);
+    assert_eq!((&simd_vec).reduce_sum(), 10);
+
+    // alternative creation
+    let simd_vec: SimdVec<i8, 16> = [1, 2, 3, 4].into();
+    assert_eq!(simd_vec.reduce_sum(), 10);
+  }
+
+  #[test]
+  fn sum() {
+    let vec1: SimdVec<i8, 8> = SimdVec::from([1, 2, 3]);
+    let vec2: SimdVec<i8, 8> = SimdVec::from([
+      5, 10, 15, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4,
+      5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9,
+    ]);
+    assert_eq!(
+      vec1 + vec2,
+      SimdVec::from([
+        6, 12, 18, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4,
+        5, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8, 9
+      ])
+    );
+  }
 }
