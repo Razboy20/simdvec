@@ -1,0 +1,11 @@
+[package]
+name = "simdvec"
+authors = ["Razboy20"]
+version = "0.1.0"
+edition = "2021"
+repository = "https://github.com/razboy20/simdvec"
+
+[lib]
+crate-type = ["lib"]
+
+[dependencies]
