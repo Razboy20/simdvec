@@ -3,6 +3,10 @@ name = "simdvec"
 authors = ["Razboy20"]
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+description = "Vectors, but with the operational speedup of SIMD!"
+keywords = ["simd", "vector"]
+categories = ["algorithms", "concurrency", "data-structures"]
 repository = "https://github.com/razboy20/simdvec"
 
 [lib]
